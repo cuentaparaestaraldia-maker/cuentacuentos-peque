@@ -30,7 +30,7 @@ jobs:
 
       - name: Generate Neural Audio Files
         run: |
-          python3 scripts/generate_tts.py --only-es --overwrite --workers 4
+          python3 scripts/generate_tts.py --workers 4
 
       - name: Commit and Push Neural Audio
         run: |
