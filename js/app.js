@@ -1,14 +1,14 @@
 // Controlador principal de Cuenta Cuentos · English Learning
 
 (function () {
-  const STORAGE_KEY = 'cuentacuentos_peque_config_v1';
+  const STORAGE_KEY = 'cuentacuentos_peque_config_v2';
 
   const PRESETS = {
     iniciacion: {
       label: '🌱 Iniciación (EN lento → ES → EN normal)',
       pauseMs: 700,
       steps: [
-        { id: 'p1', enabled: true, lang: 'en', rate: 0.65, repeats: 1 },
+        { id: 'p1', enabled: true, lang: 'en', rate: 0.70, repeats: 1 },
         { id: 'p2', enabled: true, lang: 'es', rate: 1.00, repeats: 1 },
         { id: 'p3', enabled: true, lang: 'en', rate: 1.00, repeats: 1 }
       ]
@@ -17,9 +17,9 @@
       label: '🌿 Bilingüe (ES → EN)',
       pauseMs: 650,
       steps: [
-        { id: 'p1', enabled: false, lang: 'en', rate: 0.65, repeats: 1 },
+        { id: 'p1', enabled: false, lang: 'en', rate: 0.70, repeats: 1 },
         { id: 'p2', enabled: true, lang: 'es', rate: 1.00, repeats: 1 },
-        { id: 'p3', enabled: true, lang: 'en', rate: 0.90, repeats: 1 }
+        { id: 'p3', enabled: true, lang: 'en', rate: 0.95, repeats: 1 }
       ]
     },
     refuerzo_en: {
@@ -35,7 +35,7 @@
       label: '🚀 Inmersión Inglés (1x)',
       pauseMs: 600,
       steps: [
-        { id: 'p1', enabled: false, lang: 'en', rate: 0.65, repeats: 1 },
+        { id: 'p1', enabled: false, lang: 'en', rate: 0.70, repeats: 1 },
         { id: 'p2', enabled: false, lang: 'es', rate: 1.00, repeats: 1 },
         { id: 'p3', enabled: true, lang: 'en', rate: 1.00, repeats: 1 }
       ]
@@ -44,7 +44,7 @@
       label: '🇪🇸 Solo Español',
       pauseMs: 600,
       steps: [
-        { id: 'p1', enabled: false, lang: 'en', rate: 0.65, repeats: 1 },
+        { id: 'p1', enabled: false, lang: 'en', rate: 0.70, repeats: 1 },
         { id: 'p2', enabled: true, lang: 'es', rate: 1.00, repeats: 1 },
         { id: 'p3', enabled: false, lang: 'en', rate: 1.00, repeats: 1 }
       ]
@@ -86,7 +86,7 @@
     config: loadConfig(),
     view: 'home', // 'home' | 'player'
     story: null,
-    versionKey: 'short', // 'short' | 'classic'
+    versionKey: 'classic', // 'classic' | 'short'
     sceneIndex: 0,
     isPlaying: false,
     activeStepId: null,
@@ -194,11 +194,11 @@
           <h3 class="story-title-es">${story.titleEs}</h3>
           <p class="story-title-en">${story.titleEn}</p>
           <div class="story-actions">
-            <button type="button" class="btn-start-version btn-short" data-story="${story.id}" data-ver="short">
-              ⚡ Corta <small>(${story.versions.short.scenes.length})</small>
-            </button>
             <button type="button" class="btn-start-version btn-classic" data-story="${story.id}" data-ver="classic">
-              📖 Clásica <small>(${story.versions.classic.scenes.length})</small>
+              📖 Cuento Clásico <small>(${story.versions.classic.scenes.length} escenas)</small>
+            </button>
+            <button type="button" class="btn-start-version btn-short" data-story="${story.id}" data-ver="short">
+              🌱 Versión Breve <small>(${story.versions.short.scenes.length} escenas)</small>
             </button>
           </div>
         </div>

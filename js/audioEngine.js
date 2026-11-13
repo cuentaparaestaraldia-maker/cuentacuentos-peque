@@ -1,6 +1,9 @@
 // Motor de Audio y Secuenciador Flexible para Cuenta Cuentos · English Learning
-// Soporta MP3 pre-generados con playbackRate + preservesPitch (sin deformar la voz)
-// y fallback automático a Web Speech API (también usado para palabras sueltas y hotspots).
+// Soporta MP3 neuronales pre-generados:
+//   - {sceneId}_en_slow.mp3 (inglés lento nativo neuronal ~0.70x, sin distorsión metálica por time-stretch)
+//   - {sceneId}_en.mp3      (inglés natural narrativo 1.00x)
+//   - {sceneId}_es.mp3      (español cálido narrativo 1.00x)
+// y fallback automático a las mejores voces de Web Speech API.
 
 class StoryAudioEngine {
   constructor() {
@@ -25,15 +28,20 @@ class StoryAudioEngine {
   _pickVoice(lang) {
     if (!this.voices.length) this._loadVoices();
     const prefix = lang === 'es' ? 'es' : 'en';
+    // Priorizar voces Natural / Online / Premium si el navegador las ofrece
+    const langVoices = this.voices.filter((v) => v.lang && v.lang.toLowerCase().startsWith(prefix));
+    const natural = langVoices.find((v) => /natural|online|neural|premium|enhanced|siri|google/i.test(v.name));
+    if (natural) return natural;
+
     const preferred =
       lang === 'es'
         ? ['es-ES', 'es-MX', 'es-US']
         : ['en-US', 'en-GB', 'en-AU'];
     for (const code of preferred) {
-      const exact = this.voices.find((v) => v.lang && v.lang.startsWith(code));
+      const exact = langVoices.find((v) => v.lang.startsWith(code));
       if (exact) return exact;
     }
-    return this.voices.find((v) => v.lang && v.lang.startsWith(prefix)) || null;
+    return langVoices[0] || null;
   }
 
   stop() {
@@ -67,7 +75,7 @@ class StoryAudioEngine {
   }
 
   /**
-   * Reproduce un audio (MP3 de escena o TTS de palabra suelta) con progreso continuo [0..1] para el karaoke.
+   * Reproduce un audio (MP3 neuronal de escena o TTS de palabra suelta) con progreso continuo [0..1] para el karaoke.
    */
   playClip({ sceneId = null, text, lang = 'en', rate = 1.0, onProgress = null }, token) {
     return new Promise((resolve) => {
@@ -82,65 +90,29 @@ class StoryAudioEngine {
         resolve(ok && token === this._runToken);
       };
 
-      // Si hay sceneId, intentamos reproducir el MP3 pre-generado primero
       if (sceneId) {
-        const src = `assets/audio/${sceneId}_${lang}.mp3`;
-        const audio = this.audio;
-        audio.src = src;
-        audio.playbackRate = rate;
-        if ('preservesPitch' in audio) audio.preservesPitch = true;
-        if ('mozPreservesPitch' in audio) audio.mozPreservesPitch = true;
-        if ('webkitPreservesPitch' in audio) audio.webkitPreservesPitch = true;
+        // Si es inglés lento (<= 0.82x), usamos la grabación neuronal lenta nativa (_en_slow.mp3)
+        // cuya velocidad base ya es 0.70x, evitando así el efecto metálico del time-stretch del navegador.
+        const useSlowFile = lang === 'en' && rate <= 0.82;
+        const primarySrc = useSlowFile
+          ? `assets/audio/${sceneId}_en_slow.mp3`
+          : `assets/audio/${sceneId}_${lang}.mp3`;
+        const effectiveRate = useSlowFile
+          ? Math.max(0.75, Math.min(1.25, rate / 0.70))
+          : Math.max(0.55, Math.min(1.35, rate));
 
-        let settled = false;
-        const cleanup = () => {
-          audio.onended = null;
-          audio.onerror = null;
-        };
-
-        const tick = () => {
-          if (token !== this._runToken) {
-            cleanup();
-            return finish(false);
-          }
-          if (audio.duration && isFinite(audio.duration) && onProgress) {
-            onProgress(Math.min(1, audio.currentTime / audio.duration));
-          }
-          if (!audio.paused && !audio.ended) {
-            this._rafId = requestAnimationFrame(tick);
-          }
-        };
-
-        audio.onended = () => {
-          if (settled) return;
-          settled = true;
-          cleanup();
-          finish(true);
-        };
-
-        audio.onerror = () => {
-          if (settled) return;
-          settled = true;
-          cleanup();
-          // Fallback a Web Speech API
-          this._playSpeechFallback({ text, lang, rate, onProgress }, token).then(finish);
-        };
-
-        audio.play()
-          .then(() => {
-            if (token !== this._runToken) {
-              cleanup();
-              return finish(false);
+        this._playAudioElement(primarySrc, effectiveRate, onProgress, token)
+          .then((played) => {
+            if (played) return finish(true);
+            if (useSlowFile) {
+              // Fallback al archivo _en.mp3 si _en_slow.mp3 no existiera
+              return this._playAudioElement(`assets/audio/${sceneId}_en.mp3`, rate, onProgress, token)
+                .then((ok2) => {
+                  if (ok2) return finish(true);
+                  return this._playSpeechFallback({ text, lang, rate, onProgress }, token).then(finish);
+                });
             }
-            // Reafirmar playbackRate tras play() (necesario en algunos navegadores móviles)
-            audio.playbackRate = rate;
-            this._rafId = requestAnimationFrame(tick);
-          })
-          .catch(() => {
-            if (settled) return;
-            settled = true;
-            cleanup();
-            this._playSpeechFallback({ text, lang, rate, onProgress }, token).then(finish);
+            return this._playSpeechFallback({ text, lang, rate, onProgress }, token).then(finish);
           });
       } else {
         this._playSpeechFallback({ text, lang, rate, onProgress }, token).then(finish);
@@ -148,11 +120,71 @@ class StoryAudioEngine {
     });
   }
 
+  _playAudioElement(src, playbackRate, onProgress, token) {
+    return new Promise((resolve) => {
+      if (token !== this._runToken) return resolve(false);
+      const audio = this.audio;
+      audio.src = src;
+      audio.playbackRate = playbackRate;
+      if ('preservesPitch' in audio) audio.preservesPitch = true;
+      if ('mozPreservesPitch' in audio) audio.mozPreservesPitch = true;
+      if ('webkitPreservesPitch' in audio) audio.webkitPreservesPitch = true;
+
+      let settled = false;
+      const cleanup = () => {
+        audio.onended = null;
+        audio.onerror = null;
+      };
+
+      const tick = () => {
+        if (token !== this._runToken) {
+          cleanup();
+          return resolve(false);
+        }
+        if (audio.duration && isFinite(audio.duration) && onProgress) {
+          onProgress(Math.min(1, audio.currentTime / audio.duration));
+        }
+        if (!audio.paused && !audio.ended) {
+          this._rafId = requestAnimationFrame(tick);
+        }
+      };
+
+      audio.onended = () => {
+        if (settled) return;
+        settled = true;
+        cleanup();
+        resolve(true);
+      };
+
+      audio.onerror = () => {
+        if (settled) return;
+        settled = true;
+        cleanup();
+        resolve(false);
+      };
+
+      audio.play()
+        .then(() => {
+          if (token !== this._runToken) {
+            cleanup();
+            return resolve(false);
+          }
+          audio.playbackRate = playbackRate;
+          this._rafId = requestAnimationFrame(tick);
+        })
+        .catch(() => {
+          if (settled) return;
+          settled = true;
+          cleanup();
+          resolve(false);
+        });
+    });
+  }
+
   _playSpeechFallback({ text, lang, rate, onProgress }, token) {
     return new Promise((resolve) => {
       if (token !== this._runToken) return resolve(false);
       if (!('speechSynthesis' in window)) {
-        // Sin síntesis de voz: simulamos duración estimada
         const estMs = Math.max(900, (text.split(/\s+/).length * 420) / rate);
         const start = performance.now();
         const sim = () => {
@@ -174,11 +206,11 @@ class StoryAudioEngine {
       utter.lang = lang === 'es' ? 'es-ES' : 'en-US';
       const voice = this._pickVoice(lang);
       if (voice) utter.voice = voice;
-      utter.rate = Math.max(0.5, Math.min(1.5, rate));
-      utter.pitch = 1.05;
+      utter.rate = Math.max(0.55, Math.min(1.4, rate));
+      utter.pitch = 1.04;
 
       const words = text.trim().split(/\s+/);
-      const estMs = Math.max(800, (words.length * 430) / utter.rate);
+      const estMs = Math.max(800, (words.length * 410) / utter.rate);
       const start = performance.now();
       let done = false;
 
@@ -275,9 +307,6 @@ class StoryAudioEngine {
     }
   }
 
-  /**
-   * Reproduce un único paso suelto (ej: tocar el botón de 🐢 o una palabra suelta).
-   */
   async playSingleStep(scene, step, callbacks = {}) {
     this.stop();
     const token = this._runToken;
@@ -306,9 +335,6 @@ class StoryAudioEngine {
     }
   }
 
-  /**
-   * Lee una palabra suelta o un hotspot interactivo ("Little pig! Cerdito").
-   */
   async speakWord(text, lang = 'en', rate = 0.9) {
     this.stop();
     const token = this._runToken;
