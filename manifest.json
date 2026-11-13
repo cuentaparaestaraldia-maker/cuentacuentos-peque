@@ -1,0 +1,16 @@
+{
+  "name": "Cuenta Cuentos · English Learning",
+  "short_name": "Cuentacuentos",
+  "description": "Cuentos clásicos frase a frase en inglés y español con karaoke de lectura y escenas animadas para niños.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#fffaf0",
+  "theme_color": "#f97316",
+  "icons": [
+    {
+      "src": "assets/images/rainbow_animals_party.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg"
+    }
+  ]
+}
