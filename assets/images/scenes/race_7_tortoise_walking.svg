@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540">
+  <rect width="960" height="540" fill="#e0f2fe"/>
+  <circle cx="480" cy="85" r="54" fill="#fde047"/>
+  <path d="M0 360 Q480 310 960 360 L960 540 L0 540 Z" fill="#86efac"/>
+  <path d="M0 430 Q480 390 960 420 L960 520 L0 520 Z" fill="#fde68a"/>
+  <!-- Tortuga caminando paso a paso con determinación -->
+  <g transform="translate(340, 265)">
+    <ellipse cx="115" cy="95" rx="95" ry="68" fill="#15803d" stroke="#14532d" stroke-width="6"/>
+    <polygon points="75,55 115,35 155,55 155,95 115,115 75,95" fill="#eab308" stroke="#ca8a04" stroke-width="4"/>
+    <circle cx="235" cy="75" r="36" fill="#4ade80"/>
+    <circle cx="248" cy="66" r="6" fill="#0f172a"/>
+    <path d="M232 88 Q248 98 260 86" fill="none" stroke="#14532d" stroke-width="4" stroke-linecap="round"/>
+    <rect x="45" y="145" width="28" height="38" rx="10" fill="#4ade80"/>
+    <rect x="155" y="145" width="28" height="38" rx="10" fill="#4ade80"/>
+  </g>
+  <!-- Huellas paso a paso -->
+  <ellipse cx="140" cy="465" rx="14" ry="8" fill="#d97706"/>
+  <ellipse cx="205" cy="455" rx="14" ry="8" fill="#d97706"/>
+  <ellipse cx="270" cy="465" rx="14" ry="8" fill="#d97706"/>
+</svg>

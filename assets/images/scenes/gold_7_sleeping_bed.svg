@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540">
+  <rect width="960" height="410" fill="#e0e7ff"/>
+  <rect y="410" width="960" height="130" fill="#92400e"/>
+  <!-- Cama grande (izquierda) -->
+  <rect x="60" y="210" width="230" height="190" rx="14" fill="#78350f"/>
+  <rect x="75" y="260" width="200" height="120" rx="12" fill="#3b82f6"/>
+  <rect x="85" y="230" width="80" height="36" rx="14" fill="#ffffff"/>
+  <!-- Cama mediana (centro) -->
+  <rect x="335" y="240" width="200" height="160" rx="14" fill="#92400e"/>
+  <rect x="350" y="280" width="170" height="100" rx="12" fill="#f472b6"/>
+  <rect x="360" y="254" width="70" height="32" rx="12" fill="#ffffff"/>
+  <!-- Camita pequeña (derecha) con Ricitos de Oro durmiendo plácidamente -->
+  <rect x="590" y="260" width="290" height="150" rx="16" fill="#b45309"/>
+  <rect x="610" y="270" width="95" height="45" rx="18" fill="#ffffff"/>
+  <!-- Ricitos dormida -->
+  <circle cx="645" cy="272" r="24" fill="#facc15"/>
+  <circle cx="685" cy="268" r="24" fill="#facc15"/>
+  <circle cx="668" cy="285" r="32" fill="#fed7aa"/>
+  <path d="M654 282 Q660 288 666 282" fill="none" stroke="#1e293b" stroke-width="3"/>
+  <path d="M674 282 Q680 288 686 282" fill="none" stroke="#1e293b" stroke-width="3"/>
+  <!-- Edredón verde suave -->
+  <path d="M695 280 Q785 265 865 295 L865 395 L695 395 Z" fill="#4ade80" stroke="#16a34a" stroke-width="4"/>
+  <!-- Zzz de sueño -->
+  <path d="M720 180 L750 180 L720 210 L750 210" fill="none" stroke="#6366f1" stroke-width="6" stroke-linecap="round"/>
+  <path d="M775 135 L810 135 L775 170 L810 170" fill="none" stroke="#6366f1" stroke-width="6" stroke-linecap="round"/>
+</svg>

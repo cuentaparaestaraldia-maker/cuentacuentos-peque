@@ -320,29 +320,22 @@
       el.progressDots.appendChild(dot);
     });
 
-    // Visual stage
+    // Visual stage: imagen descriptiva limpia de la acción de cada frase
     el.stageBg.style.background = scene.sky;
-    el.stageCover.src = state.story.cover;
-    el.stageCover.alt = state.story.titleEs;
-    el.stageHero.textContent = scene.hero;
-    el.stageHero.className = `stage-hero anim-${scene.anim || 'float'}`;
-    renderParticles(scene.anim);
+    el.stageCover.classList.remove('scene-enter');
+    void el.stageCover.offsetWidth;
+    el.stageCover.src = scene.image || state.story.cover;
+    el.stageCover.alt = scene.es;
+    el.stageCover.classList.add('scene-enter');
+    if (el.stageHero) el.stageHero.textContent = '';
+    if (el.stageParticles) el.stageParticles.innerHTML = '';
+    if (el.hotspotLayer) el.hotspotLayer.innerHTML = '';
 
-    // Hotspots interactivos
-    el.hotspotLayer.innerHTML = '';
-    (scene.hotspots || []).forEach((hs) => {
-      const btn = document.createElement('button');
-      btn.type = 'button';
-      btn.className = 'hotspot-btn';
-      btn.style.left = `${hs.x}%`;
-      btn.style.top = `${hs.y}%`;
-      btn.innerHTML = `<span class="hs-emoji">${hs.emoji}</span><span class="hs-label">${hs.en}</span>`;
-      btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        triggerHotspot(hs, btn);
-      });
-      el.hotspotLayer.appendChild(btn);
-    });
+    // Precargar la imagen de la siguiente escena para transición instantánea
+    if (state.sceneIndex + 1 < scenes.length && scenes[state.sceneIndex + 1].image) {
+      const preloadImg = new Image();
+      preloadImg.src = scenes[state.sceneIndex + 1].image;
+    }
 
     // Audio-only stage
     el.audioOnlyEmoji.textContent = state.story.emoji;

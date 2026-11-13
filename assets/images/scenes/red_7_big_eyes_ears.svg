@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540">
+  <rect width="960" height="540" fill="#fef3c7"/>
+  <!-- Cabecero de la cama en primer plano -->
+  <rect x="280" y="70" width="580" height="420" rx="28" fill="#92400e"/>
+  <rect x="320" y="110" width="500" height="360" rx="24" fill="#ffffff"/>
+  <!-- Lobo con OREJAS GIGANTES y OJOS GIGANTES bajo el gorro -->
+  <g transform="translate(430, 85)">
+    <!-- Orejas enormes -->
+    <polygon points="10,120 45,-55 110,105" fill="#475569" stroke="#334155" stroke-width="6"/>
+    <polygon points="38,105 52,-15 92,95" fill="#fda4af"/>
+    <polygon points="170,105 235,-55 270,120" fill="#475569" stroke="#334155" stroke-width="6"/>
+    <polygon points="188,95 228,-15 242,105" fill="#fda4af"/>
+    <!-- Cara del lobo -->
+    <ellipse cx="140" cy="185" rx="115" ry="95" fill="#64748b"/>
+    <!-- Gorrito blanco -->
+    <path d="M35 135 Q140 45 245 135 Z" fill="#ffffff" stroke="#f472b6" stroke-width="6"/>
+    <!-- Ojos enormes con gafas -->
+    <circle cx="98" cy="175" r="34" fill="#fef08a" stroke="#eab308" stroke-width="6"/>
+    <circle cx="98" cy="175" r="14" fill="#0f172a"/>
+    <circle cx="92" cy="168" r="5" fill="#ffffff"/>
+    <circle cx="182" cy="175" r="34" fill="#fef08a" stroke="#eab308" stroke-width="6"/>
+    <circle cx="182" cy="175" r="14" fill="#0f172a"/>
+    <circle cx="176" cy="168" r="5" fill="#ffffff"/>
+    <!-- Hocico -->
+    <ellipse cx="140" cy="238" rx="52" ry="34" fill="#94a3b8"/>
+    <circle cx="140" cy="226" r="14" fill="#0f172a"/>
+  </g>
+  <!-- Caperucita mirando sorprendida a la izquierda -->
+  <g transform="translate(80, 210)">
+    <path d="M20 65 Q90 -20 160 65 L185 280 L-5 280 Z" fill="#dc2626"/>
+    <circle cx="90" cy="78" r="50" fill="#fed7aa"/>
+    <circle cx="76" cy="72" r="6" fill="#0f172a"/>
+    <circle cx="106" cy="72" r="6" fill="#0f172a"/>
+    <circle cx="92" cy="96" r="10" fill="#b91c1c"/>
+  </g>
+</svg>

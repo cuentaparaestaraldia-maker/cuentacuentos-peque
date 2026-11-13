@@ -470,15 +470,31 @@ button {
   height: 100%;
   object-fit: cover;
   z-index: 2;
-  opacity: 0.88;
-  animation: kenBurns 16s ease-in-out infinite alternate;
+  opacity: 1;
+  animation: kenBurns 14s ease-in-out infinite alternate;
+}
+
+.stage-cover.scene-enter {
+  animation: sceneFadeIn 0.45s ease-out, kenBurns 14s ease-in-out 0.45s infinite alternate;
+}
+
+@keyframes sceneFadeIn {
+  from {
+    opacity: 0.25;
+    transform: scale(1.03);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 .stage-vignette {
   position: absolute;
   inset: 0;
   z-index: 3;
-  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.05) 45%, rgba(15, 23, 42, 0.35) 100%);
+  pointer-events: none;
+  background: none;
 }
 
 .stage-particles {

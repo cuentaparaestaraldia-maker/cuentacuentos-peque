@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540">
+  <rect width="960" height="540" fill="#dbeafe"/>
+  <path d="M0 360 Q480 310 960 360 L960 540 L0 540 Z" fill="#86efac"/>
+  <!-- Gran roble con sombra -->
+  <rect x="190" y="130" width="110" height="260" rx="14" fill="#78350f"/>
+  <circle cx="245" cy="110" r="145" fill="#16a34a"/>
+  <circle cx="140" cy="145" r="105" fill="#22c55e"/>
+  <circle cx="355" cy="145" r="105" fill="#15803d"/>
+  <!-- Liebre dormida apoyada en el árbol con zanahorias -->
+  <g transform="translate(275, 290)">
+    <ellipse cx="95" cy="75" rx="68" ry="44" fill="#b45309"/>
+    <circle cx="150" cy="48" r="38" fill="#b45309"/>
+    <ellipse cx="130" cy="-5" rx="12" ry="42" transform="rotate(-35 130 -5)" fill="#b45309"/>
+    <ellipse cx="155" cy="0" rx="12" ry="42" transform="rotate(-25 155 0)" fill="#b45309"/>
+    <path d="M142 46 Q152 54 162 46" fill="none" stroke="#0f172a" stroke-width="4" stroke-linecap="round"/>
+    <!-- Zanahorias crujientes al lado -->
+    <polygon points="220,95 285,80 225,118" fill="#f97316"/>
+    <polygon points="240,115 305,105 245,138" fill="#ea580c"/>
+  </g>
+  <!-- Zzz flotando -->
+  <text x="480" y="245" font-family="sans-serif" font-weight="bold" font-size="44" fill="#4f46e5">Zzz...</text>
+</svg>

@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540">
+  <rect width="960" height="540" fill="#dcfce7"/>
+  <path d="M0 370 Q480 320 960 370 L960 540 L0 540 Z" fill="#86efac"/>
+  <circle cx="840" cy="90" r="48" fill="#fde047"/>
+  <!-- Los 3 osos y Ricitos compartiendo el desayuno felices -->
+  <rect x="220" y="330" width="520" height="26" rx="10" fill="#78350f"/>
+  <!-- Papá Oso, Mamá Osa, Osito y Ricitos de Oro sonriendo juntos -->
+  <circle cx="260" cy="210" r="50" fill="#92400e"/>
+  <ellipse cx="260" cy="224" rx="24" ry="16" fill="#fde68a"/>
+  <circle cx="405" cy="225" r="44" fill="#b45309"/>
+  <ellipse cx="405" cy="238" rx="20" ry="14" fill="#fde68a"/>
+  <circle cx="535" cy="245" r="36" fill="#d97706"/>
+  <ellipse cx="535" cy="255" rx="17" ry="12" fill="#fef3c7"/>
+  <!-- Ricitos de Oro -->
+  <circle cx="645" cy="235" r="22" fill="#facc15"/>
+  <circle cx="715" cy="235" r="22" fill="#facc15"/>
+  <circle cx="680" cy="242" r="38" fill="#fed7aa"/>
+  <path d="M666 254 Q680 266 694 254" fill="none" stroke="#b91c1c" stroke-width="4" stroke-linecap="round"/>
+  <!-- 4 tazones en la mesa -->
+  <path d="M240 295 L295 295 L285 330 L250 330 Z" fill="#b45309"/>
+  <path d="M385 300 L435 300 L425 330 L395 330 Z" fill="#eab308"/>
+  <path d="M515 305 L560 305 L552 330 L523 330 Z" fill="#38bdf8"/>
+  <path d="M660 305 L705 305 L697 330 L668 330 Z" fill="#f472b6"/>
+</svg>

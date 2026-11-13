@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540">
+  <rect width="960" height="410" fill="#e0e7ff"/>
+  <rect y="410" width="960" height="130" fill="#92400e"/>
+  <!-- Los 3 osos sorprendidos junto a la camita pequeña -->
+  <g transform="translate(100, 125)">
+    <circle cx="85" cy="75" r="54" fill="#92400e"/>
+    <ellipse cx="85" cy="90" rx="26" ry="18" fill="#fde68a"/>
+    <ellipse cx="85" cy="210" rx="65" ry="90" fill="#2563eb"/>
+  </g>
+  <g transform="translate(265, 160)">
+    <circle cx="75" cy="68" r="46" fill="#b45309"/>
+    <ellipse cx="75" cy="80" rx="22" ry="15" fill="#fde68a"/>
+    <ellipse cx="75" cy="185" rx="55" ry="78" fill="#ec4899"/>
+  </g>
+  <g transform="translate(415, 215)">
+    <circle cx="65" cy="58" r="38" fill="#d97706"/>
+    <ellipse cx="65" cy="68" rx="18" ry="13" fill="#fef3c7"/>
+    <ellipse cx="65" cy="140" rx="44" ry="58" fill="#38bdf8"/>
+  </g>
+  <!-- Camita con Ricitos despertando -->
+  <rect x="555" y="250" width="330" height="165" rx="16" fill="#b45309"/>
+  <rect x="580" y="260" width="110" height="50" rx="20" fill="#ffffff"/>
+  <circle cx="650" cy="240" r="38" fill="#fed7aa"/>
+  <circle cx="618" cy="232" r="20" fill="#facc15"/>
+  <circle cx="682" cy="232" r="20" fill="#facc15"/>
+  <circle cx="638" cy="236" r="5" fill="#0f172a"/>
+  <circle cx="662" cy="236" r="5" fill="#0f172a"/>
+  <path d="M680 285 L870 285 L870 400 L680 400 Z" fill="#4ade80"/>
+</svg>

@@ -30,8 +30,7 @@ jobs:
 
       - name: Generate Neural Audio Files
         run: |
-          rm -f assets/audio/*.mp3
-          python3 scripts/generate_tts.py --overwrite --workers 4
+          python3 scripts/generate_tts.py --workers 4
 
       - name: Commit and Push Neural Audio
         run: |

@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540">
+  <rect width="960" height="410" fill="#fef3c7"/>
+  <rect y="410" width="960" height="130" fill="#b45309"/>
+  <!-- Los 3 osos mirando sus tazones en la mesa -->
+  <g transform="translate(150, 110)">
+    <circle cx="95" cy="80" r="58" fill="#92400e"/>
+    <ellipse cx="95" cy="95" rx="28" ry="20" fill="#fde68a"/>
+    <ellipse cx="95" cy="220" rx="70" ry="95" fill="#2563eb"/>
+  </g>
+  <g transform="translate(380, 145)">
+    <circle cx="85" cy="75" r="50" fill="#b45309"/>
+    <ellipse cx="85" cy="88" rx="24" ry="17" fill="#fde68a"/>
+    <ellipse cx="85" cy="200" rx="60" ry="85" fill="#ec4899"/>
+  </g>
+  <g transform="translate(595, 200)">
+    <circle cx="70" cy="65" r="42" fill="#d97706"/>
+    <ellipse cx="70" cy="76" rx="20" ry="14" fill="#fef3c7"/>
+    <ellipse cx="70" cy="155" rx="48" ry="65" fill="#38bdf8"/>
+  </g>
+  <!-- Mesa en primer plano con el tazón pequeño vacío boca arriba -->
+  <rect x="140" y="340" width="680" height="28" rx="10" fill="#78350f"/>
+  <path d="M210 295 L290 295 L275 340 L225 340 Z" fill="#b45309"/>
+  <path d="M430 302 L495 302 L485 340 L440 340 Z" fill="#eab308"/>
+  <!-- Tazón pequeño vacío con cuchara -->
+  <path d="M635 312 L695 312 L685 340 L645 340 Z" fill="#38bdf8"/>
+  <line x1="680" y1="315" x2="705" y2="285" stroke="#94a3b8" stroke-width="6" stroke-linecap="round"/>
+</svg>
