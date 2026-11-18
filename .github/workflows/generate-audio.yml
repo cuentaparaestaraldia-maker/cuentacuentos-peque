@@ -2,11 +2,6 @@ name: Generate Neural Story Audio
 
 on:
   workflow_dispatch:
-  push:
-    paths:
-      - 'data/stories.js'
-      - 'scripts/generate_tts.py'
-      - '.github/workflows/generate-audio.yml'
 
 permissions:
   contents: write
