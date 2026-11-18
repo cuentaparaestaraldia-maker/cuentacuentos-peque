@@ -22,8 +22,8 @@ STORIES_JS = ROOT / "data" / "stories.js"
 AUDIO_DIR = ROOT / "assets" / "audio"
 
 # Voces neuronales expresivas de alta fidelidad (Opción 1: Calidez y entonación viva para niños)
-DEFAULT_VOICE_EN = "en-US-AvaMultilingualNeural"  # Modelo multilingüe cálido, conversacional y expresivo
-DEFAULT_VOICE_ES = "es-MX-DaliaNeural"           # Voz suave, tierna y melódica de narradora infantil
+DEFAULT_VOICE_EN = "en-US-JennyNeural"  # Voz natural, cálida y con entonación de cuento en inglés
+DEFAULT_VOICE_ES = "es-MX-DaliaNeural"  # Voz dulce, suave y melódica de narradora infantil en español
 
 
 def extract_scenes_from_js(js_path: Path):
@@ -45,12 +45,13 @@ def extract_scenes_from_js(js_path: Path):
 async def try_edge_tts(scenes, voice_en=DEFAULT_VOICE_EN, voice_es=DEFAULT_VOICE_ES, overwrite=False, only_es=False):
     import edge_tts
 
-    test_comm = edge_tts.Communicate("Hello!", voice_en)
+    print(f"Probando conexión Edge TTS (EN: {voice_en}, ES: {voice_es})...")
     with tempfile.NamedTemporaryFile(suffix=".mp3", delete=True) as tmp:
-        await test_comm.save(tmp.name)
+        await edge_tts.Communicate("Hello little friends!", voice_en).save(tmp.name)
+        await edge_tts.Communicate("¡Hola pequeños amigos!", voice_es).save(tmp.name)
 
     print(f"Usando Edge Neural TTS Expresivo (EN: {voice_en}, ES: {voice_es})...")
-    sem = asyncio.Semaphore(12)
+    sem = asyncio.Semaphore(8)
     done = 0
 
     async def gen_scene(scene):
@@ -89,96 +90,29 @@ async def try_edge_tts(scenes, voice_en=DEFAULT_VOICE_EN, voice_es=DEFAULT_VOICE
     await asyncio.gather(*(gen_scene(s) for s in scenes))
 
 
-def ensure_kokoro_files():
-    if not KOKORO_MODEL_PATH.exists():
-        urllib.request.urlretrieve(KOKORO_MODEL_URL, str(KOKORO_MODEL_PATH))
-    if not KOKORO_VOICES_PATH.exists():
-        urllib.request.urlretrieve(KOKORO_VOICES_URL, str(KOKORO_VOICES_PATH))
-
-
-_kokoro_instance = None
-
-
-def _init_kokoro_worker():
-    global _kokoro_instance
-    os.environ["OMP_NUM_THREADS"] = "1"
-    from kokoro_onnx import Kokoro
-    _kokoro_instance = Kokoro(str(KOKORO_MODEL_PATH), str(KOKORO_VOICES_PATH))
-
-
-def _kokoro_synth_scene(args):
-    scene, overwrite = args
-    import soundfile as sf
-
-    sid = scene["id"]
-    specs = [
-        (AUDIO_DIR / f"{sid}_en.mp3", scene["en"], "af_heart", 0.94, "en-us"),
-        (AUDIO_DIR / f"{sid}_en_slow.mp3", scene["en"], "af_heart", 0.70, "en-us"),
-        (AUDIO_DIR / f"{sid}_es.mp3", scene["es"], "ef_dora", 0.96, "es"),
-    ]
-    for out_path, text, voice, speed, lang in specs:
-        if out_path.exists() and not overwrite:
-            continue
-        samples, sr = _kokoro_instance.create(text, voice=voice, speed=speed, lang=lang)
-        with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as tmp_wav:
-            wav_path = tmp_wav.name
-        try:
-            sf.write(wav_path, samples, sr)
-            subprocess.run(
-                [
-                    "ffmpeg", "-y", "-loglevel", "error",
-                    "-i", wav_path,
-                    "-codec:a", "libmp3lame", "-b:a", "64k", "-ar", "24000",
-                    str(out_path),
-                ],
-                check=True,
-            )
-        finally:
-            if os.path.exists(wav_path):
-                os.remove(wav_path)
-    return sid
-
-
-def run_kokoro_tts(scenes, overwrite=False, workers=2):
-    ensure_kokoro_files()
-    items = [(s, overwrite) for s in scenes]
-    with ProcessPoolExecutor(max_workers=workers, initializer=_init_kokoro_worker) as pool:
-        for _ in pool.map(_kokoro_synth_scene, items):
-            pass
-
-
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--overwrite", action="store_true", help="Regenerar MP3 existentes")
     parser.add_argument("--only-es", action="store_true", help="Regenerar solo los MP3 en español")
     parser.add_argument("--voice-en", default=DEFAULT_VOICE_EN, help="Voz Edge TTS para inglés")
     parser.add_argument("--voice-es", default=DEFAULT_VOICE_ES, help="Voz Edge TTS para español")
-    parser.add_argument("--engine", choices=["auto", "edge", "kokoro"], default="auto")
-    parser.add_argument("--workers", type=int, default=max(1, (os.cpu_count() or 2)))
+    parser.add_argument("--workers", type=int, default=8)
     args = parser.parse_args()
 
     AUDIO_DIR.mkdir(parents=True, exist_ok=True)
     scenes = extract_scenes_from_js(STORIES_JS)
     print(f"Procesando {len(scenes)} escenas...")
 
-    if args.engine in ("auto", "edge"):
-        try:
-            asyncio.run(try_edge_tts(
-                scenes,
-                voice_en=args.voice_en,
-                voice_es=args.voice_es,
-                overwrite=args.overwrite,
-                only_es=args.only_es,
-            ))
-            print("Generación completada con éxito mediante Edge Neural TTS.")
-            return
-        except Exception as e:
-            if args.engine == "edge":
-                raise
-            print(f"Pasando a Kokoro v1.0 Neural TTS ({e.__class__.__name__})...")
-
-    run_kokoro_tts(scenes, overwrite=args.overwrite, workers=args.workers)
+    asyncio.run(try_edge_tts(
+        scenes,
+        voice_en=args.voice_en,
+        voice_es=args.voice_es,
+        overwrite=args.overwrite,
+        only_es=args.only_es,
+    ))
+    print("Generación completada con éxito mediante Edge Neural TTS.")
 
 
 if __name__ == "__main__":
     main()
+
