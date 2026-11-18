@@ -21,13 +21,9 @@ ROOT = Path(__file__).resolve().parent.parent
 STORIES_JS = ROOT / "data" / "stories.js"
 AUDIO_DIR = ROOT / "assets" / "audio"
 
-EDGE_VOICE_EN = "en-US-AnaNeural"
-EDGE_VOICE_ES = "es-ES-ElviraNeural"
-
-KOKORO_MODEL_URL = "https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files-v1.0/kokoro-v1.0.int8.onnx"
-KOKORO_VOICES_URL = "https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files-v1.0/voices-v1.0.bin"
-KOKORO_MODEL_PATH = Path("/tmp/kokoro-v1.0.int8.onnx")
-KOKORO_VOICES_PATH = Path("/tmp/voices-v1.0.bin")
+# Voces neuronales expresivas de alta fidelidad (Opción 1: Calidez y entonación viva para niños)
+DEFAULT_VOICE_EN = "en-US-AvaMultilingualNeural"  # Modelo multilingüe cálido, conversacional y expresivo
+DEFAULT_VOICE_ES = "es-MX-DaliaNeural"           # Voz suave, tierna y melódica de narradora infantil
 
 
 def extract_scenes_from_js(js_path: Path):
@@ -46,31 +42,14 @@ def extract_scenes_from_js(js_path: Path):
     return scenes
 
 
-def apply_child_timbre_es(in_mp3: Path, out_mp3: Path):
-    """
-    Ajusta suavemente los formantes del tracto vocal (+8.5%) manteniendo la duración natural
-    para que la voz española tenga el mismo timbre dulce de niña pequeña que en-US-AnaNeural.
-    """
-    subprocess.run(
-        [
-            "ffmpeg", "-y", "-loglevel", "error",
-            "-i", str(in_mp3),
-            "-af", "asetrate=24000*1.085,aresample=24000,atempo=0.935",
-            "-codec:a", "libmp3lame", "-b:a", "64k", "-ar", "24000",
-            str(out_mp3),
-        ],
-        check=True,
-    )
-
-
-async def try_edge_tts(scenes, overwrite=False, only_es=False):
+async def try_edge_tts(scenes, voice_en=DEFAULT_VOICE_EN, voice_es=DEFAULT_VOICE_ES, overwrite=False, only_es=False):
     import edge_tts
 
-    test_comm = edge_tts.Communicate("Hello!", EDGE_VOICE_EN)
+    test_comm = edge_tts.Communicate("Hello!", voice_en)
     with tempfile.NamedTemporaryFile(suffix=".mp3", delete=True) as tmp:
         await test_comm.save(tmp.name)
 
-    print(f"Usando Microsoft Edge Neural TTS (Voz de niña en EN y ES)...")
+    print(f"Usando Edge Neural TTS Expresivo (EN: {voice_en}, ES: {voice_es})...")
     sem = asyncio.Semaphore(12)
     done = 0
 
@@ -80,31 +59,24 @@ async def try_edge_tts(scenes, overwrite=False, only_es=False):
         jobs = []
         if not only_es:
             jobs.extend([
-                (AUDIO_DIR / f"{sid}_en.mp3", scene["en"], EDGE_VOICE_EN, "+0%", "+0Hz", False),
-                (AUDIO_DIR / f"{sid}_en_slow.mp3", scene["en"], EDGE_VOICE_EN, "-30%", "+0Hz", False),
+                # Inglés natural expresivo
+                (AUDIO_DIR / f"{sid}_en.mp3", scene["en"], voice_en, "+0%", "+0Hz"),
+                # Inglés pausado didáctico (ritmo pedagógico claro sin sonar arrastrado)
+                (AUDIO_DIR / f"{sid}_en_slow.mp3", scene["en"], voice_en, "-22%", "+0Hz"),
             ])
+        # Español con modulación natural nativa (sin filtros por software que aplanen la voz)
         jobs.append(
-            (AUDIO_DIR / f"{sid}_es.mp3", scene["es"], EDGE_VOICE_ES, "+0%", "+16Hz", True)
+            (AUDIO_DIR / f"{sid}_es.mp3", scene["es"], voice_es, "+0%", "+0Hz")
         )
 
         async with sem:
-            for out_path, txt, voice, rate, pitch, child_es in jobs:
+            for out_path, txt, voice, rate, pitch in jobs:
                 if out_path.exists() and not overwrite:
                     continue
                 for attempt in range(3):
                     try:
                         comm = edge_tts.Communicate(txt, voice, rate=rate, pitch=pitch)
-                        if child_es:
-                            with tempfile.NamedTemporaryFile(suffix=".mp3", delete=False) as tmp_f:
-                                tmp_name = tmp_f.name
-                            try:
-                                await comm.save(tmp_name)
-                                apply_child_timbre_es(Path(tmp_name), out_path)
-                            finally:
-                                if os.path.exists(tmp_name):
-                                    os.remove(tmp_name)
-                        else:
-                            await comm.save(str(out_path))
+                        await comm.save(str(out_path))
                         break
                     except Exception:
                         if attempt == 2:
@@ -179,6 +151,8 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--overwrite", action="store_true", help="Regenerar MP3 existentes")
     parser.add_argument("--only-es", action="store_true", help="Regenerar solo los MP3 en español")
+    parser.add_argument("--voice-en", default=DEFAULT_VOICE_EN, help="Voz Edge TTS para inglés")
+    parser.add_argument("--voice-es", default=DEFAULT_VOICE_ES, help="Voz Edge TTS para español")
     parser.add_argument("--engine", choices=["auto", "edge", "kokoro"], default="auto")
     parser.add_argument("--workers", type=int, default=max(1, (os.cpu_count() or 2)))
     args = parser.parse_args()
@@ -189,7 +163,13 @@ def main():
 
     if args.engine in ("auto", "edge"):
         try:
-            asyncio.run(try_edge_tts(scenes, overwrite=args.overwrite, only_es=args.only_es))
+            asyncio.run(try_edge_tts(
+                scenes,
+                voice_en=args.voice_en,
+                voice_es=args.voice_es,
+                overwrite=args.overwrite,
+                only_es=args.only_es,
+            ))
             print("Generación completada con éxito mediante Edge Neural TTS.")
             return
         except Exception as e:
