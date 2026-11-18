@@ -95,8 +95,8 @@ class StoryAudioEngine {
         // cuya velocidad base ya es 0.70x, evitando así el efecto metálico del time-stretch del navegador.
         const useSlowFile = lang === 'en' && rate <= 0.82;
         const primarySrc = useSlowFile
-          ? `assets/audio/${sceneId}_en_slow.mp3?v=8`
-          : `assets/audio/${sceneId}_${lang}.mp3?v=8`;
+          ? `assets/audio/${sceneId}_en_slow.mp3?v=9`
+          : `assets/audio/${sceneId}_${lang}.mp3?v=9`;
         const effectiveRate = useSlowFile
           ? (Math.abs(rate - 0.78) <= 0.08 ? 1.0 : Math.max(0.75, Math.min(1.25, rate / 0.78)))
           : (Math.abs(rate - 1.0) <= 0.05 ? 1.0 : Math.max(0.55, Math.min(1.35, rate)));
@@ -106,7 +106,7 @@ class StoryAudioEngine {
             if (played) return finish(true);
             if (useSlowFile) {
               // Fallback al archivo _en.mp3 si _en_slow.mp3 no existiera
-              return this._playAudioElement(`assets/audio/${sceneId}_en.mp3?v=8`, rate, onProgress, token)
+              return this._playAudioElement(`assets/audio/${sceneId}_en.mp3?v=9`, rate, onProgress, token)
                 .then((ok2) => {
                   if (ok2) return finish(true);
                   return this._playSpeechFallback({ text, lang, rate, onProgress }, token).then(finish);
@@ -130,6 +130,10 @@ class StoryAudioEngine {
       if ('mozPreservesPitch' in audio) audio.mozPreservesPitch = true;
       if ('webkitPreservesPitch' in audio) audio.webkitPreservesPitch = true;
 
+      const keyMatch = src.match(/\/([^/?]+)\.mp3/);
+      const audioKey = keyMatch ? keyMatch[1] : null;
+      const timing = (window.AUDIO_TIMINGS && audioKey) ? window.AUDIO_TIMINGS[audioKey] : null;
+
       let settled = false;
       const cleanup = () => {
         audio.onended = null;
@@ -142,7 +146,14 @@ class StoryAudioEngine {
           return resolve(false);
         }
         if (audio.duration && isFinite(audio.duration) && onProgress) {
-          onProgress(Math.min(1, audio.currentTime / audio.duration));
+          const speechStart = timing ? timing[0] : 0.04;
+          const speechEnd = (timing && timing[1] > speechStart + 0.1)
+            ? timing[1]
+            : Math.max(speechStart + 0.2, audio.duration - 0.28);
+          // Adelanto visual de 85ms para compensar latencia de rAF y percepción auditiva
+          const leadBias = 0.085 * playbackRate;
+          const ratio = Math.max(0, Math.min(1, (audio.currentTime + leadBias - speechStart) / (speechEnd - speechStart)));
+          onProgress(ratio);
         }
         if (!audio.paused && !audio.ended) {
           this._rafId = requestAnimationFrame(tick);

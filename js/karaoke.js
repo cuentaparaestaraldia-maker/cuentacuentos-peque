@@ -23,14 +23,26 @@ class KaraokeRenderer {
   _buildWordList(text) {
     if (!text) return { words: [], weights: [] };
     const words = text.trim().split(/\s+/);
-    // Peso proporcional a caracteres + pequeño margen por palabra
-    const rawWeights = words.map((w) => Math.max(2, w.replace(/[^a-zA-ZáéíóúñÁÉÍÓÚÑ]/g, '').length) + 1.5);
-    const total = rawWeights.reduce((a, b) => a + b, 0);
+    // Peso proporcional a caracteres + pausa natural tras signos de puntuación
+    const wordDurs = [];
+    const pauseAfter = [];
+    words.forEach((w, idx) => {
+      const cleanLen = w.replace(/[^a-zA-ZáéíóúñÁÉÍÓÚÑ]/g, '').length;
+      wordDurs.push(Math.max(1.5, cleanLen) + 1.0);
+      let pause = 0;
+      if (idx < words.length - 1) {
+        if (/[.!?…]["”']?$/.test(w)) pause = 4.2;
+        else if (/[,;:—]["”']?$/.test(w)) pause = 2.2;
+      }
+      pauseAfter.push(pause);
+    });
+    const total = wordDurs.reduce((a, b) => a + b, 0) + pauseAfter.reduce((a, b) => a + b, 0);
     let acc = 0;
-    const weights = rawWeights.map((w) => {
+    const weights = wordDurs.map((dur, idx) => {
       const start = acc / total;
-      acc += w;
+      acc += dur;
       const end = acc / total;
+      acc += pauseAfter[idx];
       return { start, end };
     });
     return { words, weights };

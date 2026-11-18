@@ -261,7 +261,7 @@ window.STORIES = [
           },
           {
             id: 'red_c_2',
-            image: 'assets/images/scenes/red_2_mom_basket.svg',
+            image: 'assets/images/scenes/red_2_mom_basket.jpg',
             en: 'One sunny morning, her mother gave her a basket with fresh cake, honey, and red apples to take to Grandma’s cottage in the woods.',
             es: 'Una mañana soleada, su mamá le dio una cesta con pastel recién hecho, miel y manzanas rojas para llevar a la casita de la abuela en el bosque.',
             sky: 'linear-gradient(180deg, #fef3c7 0%, #fed7aa 100%)',
@@ -287,7 +287,7 @@ window.STORIES = [
           },
           {
             id: 'red_c_4',
-            image: 'assets/images/scenes/red_4_wolf_tree.svg',
+            image: 'assets/images/scenes/red_4_wolf_tree.jpg',
             en: 'In the middle of the woods, a sneaky wolf stepped out from behind a tree and asked: Where are you going, Little Red Riding Hood?',
             es: 'En mitad del bosque, un lobo astuto salió de detrás de un árbol y le preguntó: ¿Adónde vas tan temprano, Caperucita Roja?',
             sky: 'linear-gradient(180deg, #cbd5e1 0%, #bbf7d0 100%)',
@@ -313,7 +313,7 @@ window.STORIES = [
           },
           {
             id: 'red_c_6',
-            image: 'assets/images/scenes/red_6_wolf_bed.svg',
+            image: 'assets/images/scenes/red_6_wolf_bed.jpg',
             en: 'The wolf reached the cottage first, hid Grandma safely in the wardrobe, and put on her nightcap and glasses in the big bed.',
             es: 'El lobo llegó primero a la casita, escondió a la abuelita en el armario, y se puso su gorro de dormir y sus gafas dentro de la cama.',
             sky: 'linear-gradient(180deg, #fed7aa 0%, #fde68a 100%)',
@@ -326,7 +326,7 @@ window.STORIES = [
           },
           {
             id: 'red_c_7',
-            image: 'assets/images/scenes/red_7_big_eyes_ears.svg',
+            image: 'assets/images/scenes/red_7_big_eyes_ears.jpg',
             en: 'When Little Red Riding Hood came in, she looked closely and asked: Oh Grandma, what big ears and what big eyes you have!',
             es: 'Cuando Caperucita Roja entró en la habitación, se acercó sorprendida y preguntó: ¡Ay, abuelita, qué orejas y qué ojos tan grandes tienes!',
             sky: 'linear-gradient(180deg, #e2e8f0 0%, #fde68a 100%)',
@@ -339,7 +339,7 @@ window.STORIES = [
           },
           {
             id: 'red_c_8',
-            image: 'assets/images/scenes/red_8_big_teeth.svg',
+            image: 'assets/images/scenes/red_8_big_teeth.jpg',
             en: 'All the better to hear you and see you with, my dear! said the wolf. Oh Grandma, what big teeth you have! — All the better to eat you with!',
             es: '¡Son para oírte y para verte mejor, cariño! dijo el lobo. ¡Pero abuelita, qué dientes tan grandes tienes! — ¡Son para comerte mejor!',
             sky: 'linear-gradient(180deg, #fecaca 0%, #fde68a 100%)',
@@ -352,7 +352,7 @@ window.STORIES = [
           },
           {
             id: 'red_c_9',
-            image: 'assets/images/scenes/red_9_woodcutter.svg',
+            image: 'assets/images/scenes/red_9_woodcutter.jpg',
             en: 'Just in time, a brave woodcutter heard Little Red Riding Hood shout! He burst through the door and chased the frightened wolf far away.',
             es: '¡Justo a tiempo, un valiente leñador del bosque oyó gritar a Caperucita! Abrió la puerta de par en par e hizo huir al lobo muy lejos.',
             sky: 'linear-gradient(180deg, #bae6fd 0%, #fde68a 100%)',
@@ -365,7 +365,7 @@ window.STORIES = [
           },
           {
             id: 'red_c_10',
-            image: 'assets/images/scenes/red_10_happy_tea.svg',
+            image: 'assets/images/scenes/red_10_happy_tea.jpg',
             en: 'Grandma came out safe and sound, gave Little Red Riding Hood a big warm hug, and together they shared the delicious cake and honey!',
             es: 'La abuelita salió sana y salva, le dio un abrazo enorme a Caperucita Roja, ¡y juntos merendaron el rico pastel con miel y manzanas!',
             sky: 'linear-gradient(180deg, #fbcfe8 0%, #fef9c3 100%)',
@@ -383,7 +383,7 @@ window.STORIES = [
         scenes: [
           {
             id: 'red_s_1',
-            image: 'assets/images/scenes/red_2_mom_basket.svg',
+            image: 'assets/images/scenes/red_2_mom_basket.jpg',
             en: 'Once upon a time, Little Red Riding Hood took a basket of cake and apples to her Grandma’s house in the forest.',
             es: 'Érase una vez, Caperucita Roja llevaba una cesta con pastel y manzanas a la casita de su abuela en el bosque.',
             sky: 'linear-gradient(180deg, #fde68a 0%, #bbf7d0 100%)',
@@ -396,7 +396,7 @@ window.STORIES = [
           },
           {
             id: 'red_s_2',
-            image: 'assets/images/scenes/red_4_wolf_tree.svg',
+            image: 'assets/images/scenes/red_4_wolf_tree.jpg',
             en: 'Along the green forest path, a sneaky wolf asked her where she was going and ran ahead to the cottage.',
             es: 'Por el sendero verde del bosque, un lobo astuto le preguntó adónde iba y corrió por un atajo hasta la casita.',
             sky: 'linear-gradient(180deg, #bae6fd 0%, #86efac 100%)',
@@ -409,7 +409,7 @@ window.STORIES = [
           },
           {
             id: 'red_s_3',
-            image: 'assets/images/scenes/red_6_wolf_bed.svg',
+            image: 'assets/images/scenes/red_6_wolf_bed.jpg',
             en: 'While Little Red Riding Hood picked pretty flowers, the wolf hid Grandma and dressed up in her bed.',
             es: 'Mientras Caperucita recogía flores bonitas, el lobo escondió a la abuelita y se disfrazó dentro de su cama.',
             sky: 'linear-gradient(180deg, #fbcfe8 0%, #fde68a 100%)',
@@ -422,7 +422,7 @@ window.STORIES = [
           },
           {
             id: 'red_s_4',
-            image: 'assets/images/scenes/red_7_big_eyes_ears.svg',
+            image: 'assets/images/scenes/red_7_big_eyes_ears.jpg',
             en: 'Grandma, what big eyes and big ears you have! she said. All the better to see you and hear you with! replied the wolf.',
             es: '¡Abuelita, qué ojos y qué orejas tan grandes tienes! dijo ella. ¡Son para verte y oírte mejor! respondió el lobo.',
             sky: 'linear-gradient(180deg, #e2e8f0 0%, #fde68a 100%)',
@@ -435,7 +435,7 @@ window.STORIES = [
           },
           {
             id: 'red_s_5',
-            image: 'assets/images/scenes/red_9_woodcutter.svg',
+            image: 'assets/images/scenes/red_9_woodcutter.jpg',
             en: 'And what big teeth you have! — All the better to eat you with! shouted the wolf, but a brave woodcutter came to save them.',
             es: '¡Y qué dientes tan grandes tienes! — ¡Para comerte mejor! gritó el lobo, pero un leñador valiente entró a salvarlas.',
             sky: 'linear-gradient(180deg, #bae6fd 0%, #fecaca 100%)',
@@ -448,7 +448,7 @@ window.STORIES = [
           },
           {
             id: 'red_s_6',
-            image: 'assets/images/scenes/red_10_happy_tea.svg',
+            image: 'assets/images/scenes/red_10_happy_tea.jpg',
             en: 'The wolf ran away forever, and Little Red Riding Hood hugged her Grandma and shared the yummy cake!',
             es: 'El lobo huyó para siempre, ¡y Caperucita Roja abrazó a su abuelita y compartieron el rico pastel!',
             sky: 'linear-gradient(180deg, #fbcfe8 0%, #fef9c3 100%)',
