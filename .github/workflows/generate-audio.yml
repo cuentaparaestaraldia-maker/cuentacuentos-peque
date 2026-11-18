@@ -25,8 +25,7 @@ jobs:
 
       - name: Install TTS dependencies
         run: |
-          sudo apt-get update && sudo apt-get install -y ffmpeg espeak-ng
-          pip install edge-tts kokoro-onnx soundfile
+          pip install --upgrade edge-tts
 
       - name: Generate Neural Audio Files
         run: |
