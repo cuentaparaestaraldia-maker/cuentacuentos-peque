@@ -95,18 +95,18 @@ class StoryAudioEngine {
         // cuya velocidad base ya es 0.70x, evitando así el efecto metálico del time-stretch del navegador.
         const useSlowFile = lang === 'en' && rate <= 0.82;
         const primarySrc = useSlowFile
-          ? `assets/audio/${sceneId}_en_slow.mp3?v=6`
-          : `assets/audio/${sceneId}_${lang}.mp3?v=6`;
+          ? `assets/audio/${sceneId}_en_slow.mp3?v=7`
+          : `assets/audio/${sceneId}_${lang}.mp3?v=7`;
         const effectiveRate = useSlowFile
-          ? Math.max(0.75, Math.min(1.25, rate / 0.78))
-          : Math.max(0.55, Math.min(1.35, rate));
+          ? (Math.abs(rate - 0.78) <= 0.08 ? 1.0 : Math.max(0.75, Math.min(1.25, rate / 0.78)))
+          : (Math.abs(rate - 1.0) <= 0.05 ? 1.0 : Math.max(0.55, Math.min(1.35, rate)));
 
         this._playAudioElement(primarySrc, effectiveRate, onProgress, token)
           .then((played) => {
             if (played) return finish(true);
             if (useSlowFile) {
               // Fallback al archivo _en.mp3 si _en_slow.mp3 no existiera
-              return this._playAudioElement(`assets/audio/${sceneId}_en.mp3?v=6`, rate, onProgress, token)
+              return this._playAudioElement(`assets/audio/${sceneId}_en.mp3?v=7`, rate, onProgress, token)
                 .then((ok2) => {
                   if (ok2) return finish(true);
                   return this._playSpeechFallback({ text, lang, rate, onProgress }, token).then(finish);

@@ -86,7 +86,7 @@ def create_slow_audio(in_en_mp3: Path, out_en_slow_mp3: Path):
             "ffmpeg", "-y", "-loglevel", "error",
             "-i", str(in_en_mp3),
             "-af", "atempo=0.78",
-            "-codec:a", "libmp3lame", "-b:a", "64k", "-ar", "24000",
+            "-codec:a", "libmp3lame", "-b:a", "128k", "-ar", "44100",
             str(out_en_slow_mp3),
         ],
         check=True,
